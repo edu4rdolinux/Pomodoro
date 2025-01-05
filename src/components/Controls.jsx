@@ -1,12 +1,11 @@
 import StartButton from "./StartButton";
+import StopButton from "./StopButton";
 
 export default function Controls({ isRunning, onStop, onReset, onStart }) {
     return (
         <div className="Buttons">
             <StartButton isRunning={isRunning} onStart={onStart} />
-            <button onClick={onStop} disabled={!isRunning}>
-                Parar
-            </button>
+            <StopButton isRunning={isRunning} onStop={onStop}/>
             <button onClick={onReset}>
                 Resetar
             </button>
