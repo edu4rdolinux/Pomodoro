@@ -1,9 +1,9 @@
-export default function Controls({ isRunning, onStart, onStop, onReset }) {
+import StartButton from "./StartButton";
+
+export default function Controls({ isRunning, onStop, onReset, onStart }) {
     return (
         <div className="Buttons">
-            <button onClick={onStart} disabled={isRunning}>
-                Iniciar
-            </button>
+            <StartButton isRunning={isRunning} onStart={onStart} />
             <button onClick={onStop} disabled={!isRunning}>
                 Parar
             </button>
