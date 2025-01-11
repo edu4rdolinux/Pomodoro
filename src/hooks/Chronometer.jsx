@@ -3,8 +3,9 @@ import Display from "../components/Display";
 import Controls from "../components/Controls";
 
 export default function Chronometer() {
-    const [time, setTime] = useState({ minutes: 0, seconds: 0, milliseconds: 0 });
+    const [time, setTime] = useState({ minutes: 24, seconds: 59, milliseconds: 0 });
     const [isRunning, setIsRunning] = useState(false);
+    const [stage, setStage] = useState("focus");
     const intervalRef = useRef(null);
     const audioRef = useRef(null);
 
@@ -28,16 +29,24 @@ export default function Chronometer() {
                         milliseconds = 0;
                         seconds += 1;
 
-                        if (minutes >= 24 && seconds >= 60) {
+                        if (seconds >= 60) {
+                            seconds = 0;
+                            minutes += 1;
+                        }
+
+                        if (stage === "focus" && minutes >= 25 && seconds === 0) {
                             audioRef.current.play().catch(error => {
                                 console.error("Error playing audio:", error);
                             });
-                            setTime({ minutes: 0, seconds: 0, milliseconds: 0 });
+                            setStage("break");
+                            return { minutes: 0, seconds: 0, milliseconds: 0 };
+                        } else if (stage === "break" && minutes >= 5 && seconds === 0) {
+                            audioRef.current.play().catch(error => {
+                                console.error("Error playing audio:", error);
+                            });
+                            setStage("focus");
+                            return { minutes: 0, seconds: 0, milliseconds: 0 };
                         }
-                    }
-                    if (seconds >= 60) {
-                        seconds = 0;
-                        minutes += 1;
                     }
 
                     return { minutes, seconds, milliseconds };
@@ -57,6 +66,7 @@ export default function Chronometer() {
     const resetTimer = () => {
         stopTimer();
         setTime({ minutes: 0, seconds: 0, milliseconds: 0 });
+        setStage("focus");
     };
 
     return (
