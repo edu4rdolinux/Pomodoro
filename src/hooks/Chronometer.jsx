@@ -3,7 +3,7 @@ import Display from "../components/Display";
 import Controls from "../components/Controls";
 
 export default function Chronometer() {
-    const [time, setTime] = useState({ minutes: 24, seconds: 58, milliseconds: 0 });
+    const [time, setTime] = useState({ minutes: 0, seconds: 0, milliseconds: 0 });
     const [isRunning, setIsRunning] = useState(false);
     const intervalRef = useRef(null);
     const audioRef = useRef(null);
